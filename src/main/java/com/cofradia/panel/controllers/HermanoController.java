@@ -34,4 +34,13 @@ public class HermanoController {
         // The repository's save() method automatically persists the entity
         return hermanoRepository.save(newHermano);
     }
+
+    /**
+     * Endpoint to delete a member by their ID.
+     * @param id The unique identifier of the member to delete.
+     */
+    @DeleteMapping("/{id}")
+    public void deleteHermano(@PathVariable Long id) {
+        hermanoRepository.deleteById(id);
+    }
 }
