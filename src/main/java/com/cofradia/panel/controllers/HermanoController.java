@@ -43,4 +43,23 @@ public class HermanoController {
     public void deleteHermano(@PathVariable Long id) {
         hermanoRepository.deleteById(id);
     }
+
+    /**
+     * Endpoint to update an existing member.
+     * @param id The ID of the member to update (from the URL).
+     * @param hermanoActualizado The new data from the frontend form.
+     * @return The updated and saved member.
+     */
+    @PutMapping("/{id}")
+    public Hermano updateHermano(@PathVariable Long id, @RequestBody Hermano hermanoActualizado) {
+        return hermanoRepository.findById(id)
+                .map(hermanoExistente -> {
+                    hermanoExistente.setNombre(hermanoActualizado.getNombre());
+                    hermanoExistente.setApellidos(hermanoActualizado.getApellidos());
+                    hermanoExistente.setFechaAlta(hermanoActualizado.getFechaAlta());
+                    hermanoExistente.setCuotaAlDia(hermanoActualizado.isCuotaAlDia());
+                    return hermanoRepository.save(hermanoExistente);
+                })
+                .orElseThrow(() -> new RuntimeException("Member not found with id: " + id));
+    }
 }
